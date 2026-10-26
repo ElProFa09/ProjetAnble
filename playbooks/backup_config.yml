@@ -1,0 +1,30 @@
+---
+- name: Sauvegarde des configurations courantes
+  hosts: routers
+  gather_facts: no
+
+  vars:
+    backup_dir: "./backups_{{ lookup('pipe', 'date +%Y%m%d_%H%M%S') }}"
+
+  tasks:
+    - name: Créer le dossier de sauvegarde localement
+      file:
+        path: "{{ backup_dir }}"
+        state: directory
+      delegate_to: localhost
+      run_once: true
+
+    - name: Sauvegarder la running-config pour Cisco IOS (CAT8Kv)
+      cisco.ios.ios_config:
+        backup: yes
+      when: ansible_network_os == 'cisco.ios.ios'
+
+    - name: Sauvegarder la running-config pour Cisco IOS-XR (IOS XRv)
+      cisco.iosxr.iosxr_config:
+        backup: yes
+      when: ansible_network_os == 'cisco.iosxr.iosxr'
+
+    - name: Sauvegarder la running-config pour Cisco NX-OS (N9K)
+      cisco.nxos.nxos_config:
+        backup: yes
+      when: ansible_network_os == 'cisco.nxos.nxos'
