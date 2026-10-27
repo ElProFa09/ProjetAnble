@@ -1,0 +1,3 @@
+interface_name: "Ethernet1/1"
+interface_ip: "192.168.30.1"
+interface_mask: "255.255.255.0"

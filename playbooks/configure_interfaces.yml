@@ -1,0 +1,30 @@
+---
+- name: Configuration des interfaces de routage via host_vars
+  hosts: routers
+  gather_facts: no
+
+  tasks:
+    - name: Configurer l'interface sur Cisco IOS (CAT8Kv)
+      cisco.ios.ios_config:
+        lines:
+          - "ip address {{ interface_ip }} {{ interface_mask }}"
+          - "no shutdown"
+        parents: "interface {{ interface_name }}"
+      when: ansible_network_os == 'cisco.ios.ios'
+
+    - name: Configurer l'interface sur Cisco IOS-XR (IOS XRv)
+      cisco.iosxr.iosxr_config:
+        lines:
+          - "ipv4 address {{ interface_ip }} {{ interface_mask }}"
+          - "no shutdown"
+        parents: "interface {{ interface_name }}"
+      when: ansible_network_os == 'cisco.iosxr.iosxr'
+
+    - name: Configurer l'interface sur Cisco NX-OS (N9K)
+      cisco.nxos.nxos_config:
+        lines:
+          - "no switchport"
+          - "ip address {{ interface_ip }} {{ interface_mask }}"
+          - "no shutdown"
+        parents: "interface {{ interface_name }}"
+      when: ansible_network_os == 'cisco.nxos.nxos'
