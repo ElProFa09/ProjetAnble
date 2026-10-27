@@ -1,0 +1,23 @@
+---
+- name: Déploiement de la configuration NTP sur le parc hétérogène
+  hosts: routers
+  gather_facts: no
+
+  tasks:
+    - name: Configurer NTP pour Cisco IOS (CAT8Kv)
+      cisco.ios.ios_config:
+        lines:
+          - ntp server {{ ntp_server }}
+      when: ansible_network_os == 'cisco.ios.ios'
+
+    - name: Configurer NTP pour Cisco IOS-XR (IOS XRv)
+      cisco.iosxr.iosxr_config:
+        lines:
+          - ntp server {{ ntp_server }}
+      when: ansible_network_os == 'cisco.iosxr.iosxr'
+
+    - name: Configurer NTP pour Cisco NX-OS (N9K)
+      cisco.nxos.nxos_config:
+        lines:
+          - ntp server {{ ntp_server }}
+      when: ansible_network_os == 'cisco.nxos.nxos'
