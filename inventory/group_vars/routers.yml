@@ -1,2 +1,10 @@
 ---
 ntp_server: "10.10.20.254"
+
+network_vlans:
+  - id: 10
+    name: DATA
+  - id: 20
+    name: VOICE
+  - id: 30
+    name: MANAGEMENT
