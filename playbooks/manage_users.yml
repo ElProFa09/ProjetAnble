@@ -1,0 +1,32 @@
+---
+- name: Gestion des utilisateurs et de la sécurité sur le parc hétérogène
+  hosts: routers
+  gather_facts: no
+
+  tasks:
+    - name: Configurer l'utilisateur et SSH pour Cisco IOS (CAT8Kv)
+      cisco.ios.ios_config:
+        lines:
+          - username netadmin secret C1sco12345!
+          - ip ssh version 2
+      when: ansible_network_os == 'cisco.ios.ios'
+
+    - name: Configurer les lignes VTY pour Cisco IOS (CAT8Kv)
+      cisco.ios.ios_config:
+        lines:
+          - transport input ssh
+        parents: line vty 0 4
+      when: ansible_network_os == 'cisco.ios.ios'
+
+    - name: Configurer l'utilisateur et SSH pour Cisco IOS-XR (IOS XRv)
+      cisco.iosxr.iosxr_config:
+        lines:
+          - username netadmin secret C1sco12345!
+          - ssh server v2
+      when: ansible_network_os == 'cisco.iosxr.iosxr'
+
+    - name: Configurer l'utilisateur et SSH pour Cisco NX-OS (N9K)
+      cisco.nxos.nxos_config:
+        lines:
+          - username netadmin password C1sco12345! role network-admin
+      when: ansible_network_os == 'cisco.nxos.nxos'
