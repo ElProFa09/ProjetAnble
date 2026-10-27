@@ -1,0 +1,26 @@
+---
+- name: Collecte des informations et configuration réseau
+  hosts: routers
+  gather_facts: no
+
+  tasks:
+    - name: Récupérer les facts des équipements Cisco IOS
+      cisco.ios.ios_facts:
+        gather_subset: all
+
+    - name: Afficher la version du système d'exploitation
+      debug:
+        msg: "L'appareil {{ inventory_hostname }} tourne sous la version {{ ansible_net_version }}"
+
+    - name: Sauvegarder les informations dans un fichier texte local
+      copy:
+        content: |
+          ========================================
+          Rapport de l'équipement : {{ inventory_hostname }}
+          ========================================
+          Système d'exploitation : {{ ansible_net_os_version | default(ansible_net_version) }}
+          Numéro de série        : {{ ansible_net_serialnum | default('N/A') }}
+          Modèle                 : {{ ansible_net_model | default('N/A') }}
+          Version IOS            : {{ ansible_net_version }}
+        dest: "./output_facts_{{ inventory_hostname }}.txt"
+      delegate_to: localhost
