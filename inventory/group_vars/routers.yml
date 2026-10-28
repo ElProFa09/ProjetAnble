@@ -8,3 +8,5 @@ network_vlans:
     name: VOICE
   - id: 30
     name: MANAGEMENT
+ospf_process_id: 1
+ospf_area: 0

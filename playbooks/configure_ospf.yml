@@ -1,0 +1,20 @@
+---
+- name: Configuration du routage dynamique OSPF sur les routeurs
+  hosts: routers
+  gather_facts: no
+
+  tasks:
+    - name: Configurer OSPF sur Cisco IOS (CAT8Kv)
+      cisco.ios.ios_config:
+        lines:
+          - "network {{ interface_ip }} 0.0.0.255 area {{ ospf_area }}"
+        parents: "router ospf {{ ospf_process_id }}"
+      when: ansible_network_os == 'cisco.ios.ios'
+
+    - name: Configurer OSPF sur Cisco IOS-XR (IOS XRv)
+      cisco.iosxr.iosxr_config:
+        lines:
+          - "router ospf {{ ospf_process_id }}"
+          - "area {{ ospf_area }}"
+          - "interface {{ interface_name }}"
+      when: ansible_network_os == 'cisco.iosxr.iosxr'
