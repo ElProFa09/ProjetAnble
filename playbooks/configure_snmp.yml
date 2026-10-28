@@ -1,0 +1,33 @@
+---
+- name: Configuration et conformité du protocole SNMP (Point 9)
+  hosts: routers
+  gather_facts: no
+  vars:
+    snmp_community: "SecuredRO"
+    snmp_location: "Datacenter-Lubumbashi"
+    snmp_contact: "admin-reseau@entreprise.local"
+
+  tasks:
+    - name: Configurer SNMP sur Cisco IOS (CAT8Kv)
+      cisco.ios.ios_config:
+        lines:
+          - "snmp-server community {{ snmp_community }} RO"
+          - "snmp-server location {{ snmp_location }}"
+          - "snmp-server contact {{ snmp_contact }}"
+      when: ansible_network_os == 'cisco.ios.ios'
+
+    - name: Configurer SNMP sur Cisco IOS-XR (IOS XRv)
+      cisco.iosxr.iosxr_config:
+        lines:
+          - "snmp-server community {{ snmp_community }} RO"
+          - "snmp-server location {{ snmp_location }}"
+          - "snmp-server contact {{ snmp_contact }}"
+      when: ansible_network_os == 'cisco.iosxr.iosxr'
+
+    - name: Configurer SNMP sur Cisco NX-OS (N9K)
+      cisco.nxos.nxos_config:
+        lines:
+          - "snmp-server community {{ snmp_community }} ro"
+          - "snmp-server location {{ snmp_location }}"
+          - "snmp-server contact {{ snmp_contact }}"
+      when: ansible_network_os == 'cisco.nxos.nxos'
