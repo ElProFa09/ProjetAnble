@@ -1,0 +1,29 @@
+---
+- name: Configuration de la bannière MOTD via Template Jinja2 (Étape 8)
+  hosts: routers
+  gather_facts: no
+
+  tasks:
+    - name: Appliquer la bannière MOTD sur les routeurs Cisco IOS
+      cisco.ios.ios_config:
+        lines:
+          - "banner motd ^"
+          - "{{ lookup('template', '../templates/motd.j2') }}"
+          - "^"
+      when: ansible_network_os == 'cisco.ios.ios'
+
+    - name: Appliquer la bannière MOTD sur Cisco IOS-XR
+      cisco.iosxr.iosxr_config:
+        lines:
+          - "banner login ^"
+          - "{{ lookup('template', '../templates/motd.j2') }}"
+          - "^"
+      when: ansible_network_os == 'cisco.iosxr.iosxr'
+
+    - name: Appliquer la bannière MOTD sur Cisco NX-OS
+      cisco.nxos.nxos_config:
+        lines:
+          - "banner motd ^"
+          - "{{ lookup('template', '../templates/motd.j2') }}"
+          - "^"
+      when: ansible_network_os == 'cisco.nxos.nxos'
