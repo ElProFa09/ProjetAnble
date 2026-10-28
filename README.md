@@ -1,7 +1,7 @@
 # 🌐 Projet NetDevOps : Automatisation Réseau Multi-Vendeurs avec Ansible
 
 > **Auteur :** NGOIE SHABANA GLODIE  
-> **Contexte académique :** TP DevNet / Master 2 - Administration Système et Réseau  
+> **Contexte académique :** TP DevNet / Master 2 - DevOps et sécurité  
 > **Statut du projet :** Production / Validé ✅
 
 ---
