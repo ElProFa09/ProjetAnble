@@ -1,0 +1,14 @@
+# Rapport d'État Final - Automatisation Réseau Ansible
+**Date d'exécution :** {{ ansible_date_time.date }} à {{ ansible_date_time.time }}
+**Projet :** TP DevNet / Automatisation Multi-Vendeurs
+
+## Équipements de l'infrastructure
+
+| Hôte / IP | Système d'Exploitation (OS) | Statut de la configuration |
+| :--- | :--- | :--- |
+{% for host in groups['routers'] %}
+| **{{ host }}** ({{ hostvars[host]['ansible_host'] | default(host) }}) | {{ hostvars[host]['ansible_network_os'] | default('Non spécifié') }} | Mis à jour avec succès ✅ |
+{% endfor %}
+
+---
+*Rapport généré automatiquement par le module Template d'Ansible.*

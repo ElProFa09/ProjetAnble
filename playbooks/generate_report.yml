@@ -1,0 +1,19 @@
+---
+- name: Génération du Rapport d'État Final (Point 10)
+  hosts: localhost
+  gather_facts: yes
+
+  tasks:
+    - name: S'assurer que le dossier reports existe
+      ansible.builtin.file:
+        path: "../reports"
+        state: directory
+
+    - name: Générer le rapport récapitulatif final au format Markdown
+      ansible.builtin.template:
+        src: "../templates/report.j2"
+        dest: "../reports/rapport_execution.md"
+
+    - name: Afficher un message de confirmation
+      ansible.builtin.debug:
+        msg: "Le rapport final a été généré avec succès dans reports/rapport_execution.md !"
